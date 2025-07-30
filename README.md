@@ -1,61 +1,75 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Project Management App
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi manajemen tugas proyek berbasis Laravel Blade. Aplikasi ini mendukung autentikasi pengguna, pembuatan proyek, manajemen tim, daftar tugas per proyek, dan progress bar.
 
-## About Laravel
+## 📌 Fitur Utama
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Autentikasi pengguna (Login, Register)
+- User dapat membuat proyek
+- User dapat menambahkan tim ke proyek
+- Task list per proyek (tambah, edit, hapus tugas)
+- Progress bar berdasarkan penyelesaian tugas
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🧩 User Stories
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. **Sebagai pengguna**, saya ingin dapat melakukan login dan registrasi agar dapat mengakses aplikasi dengan aman.
+2. **Sebagai pengguna**, saya ingin membuat proyek baru agar saya dapat mengelola pekerjaan saya.
+3. **Sebagai pengguna**, saya ingin menambahkan anggota tim ke dalam proyek agar kami bisa bekerja sama.
+4. **Sebagai pengguna**, saya ingin menambahkan tugas ke dalam proyek agar saya dapat mengelola pekerjaan.
+5. **Sebagai pengguna**, saya ingin melihat progress bar proyek agar saya tahu seberapa jauh pekerjaan sudah selesai.
 
-## Learning Laravel
+## ✅ Acceptance Criteria
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Pengguna harus bisa melakukan registrasi dan login.
+- Pengguna dapat membuat, melihat, mengedit, dan menghapus proyek.
+- Pengguna dapat menambahkan anggota tim ke proyek.
+- Pengguna dapat menambahkan tugas ke proyek dan menandainya sebagai selesai.
+- Progress bar proyek harus berubah sesuai dengan jumlah tugas yang telah selesai.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## ⚙️ Instalasi
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. Clone repositori ini:
+   ```bash
+   git clone https://github.com/fitaa12/project-management-app.git
+   cd project-management-app
+   ```
 
-## Laravel Sponsors
+2. Install dependensi Laravel:
+   ```bash
+   composer install
+   npm install && npm run dev
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+3. Copy file `.env` dan buat kunci aplikasi:
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-### Premium Partners
+4. Setup database dan migrasi:
+   ```bash
+   php artisan migrate --seed
+   ```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+5. Jalankan server:
+   ```bash
+   php artisan serve
+   ```
 
-## Contributing
+## 📂 Struktur Folder Penting
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- `app/Models` – Model Eloquent
+- `resources/views` – Blade templates (UI)
+- `routes/web.php` – Routing aplikasi
+- `app/Http/Controllers` – Logika bisnis aplikasi
 
-## Code of Conduct
+## 👤 Pengembang
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Nama: [Luthfita Rahmaniahusna]  
+NIM: [2023160014]  
+Mata Kuliah: Pemrograman Web Berbasis Framework 
+Tugas: UAS (Tugas Individu)
 
-## Security Vulnerabilities
+## 🔗 Link Repositori
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+[https://github.com/fitaa12/project-management-app](hhttps://github.com/fitaa12/project-management-app)
