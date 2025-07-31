@@ -52,19 +52,30 @@ class ProjectController extends Controller
      * Cek akses user terhadap proyek.
      */
   protected function authorizeProjectAccess($project)
-{
+    {
     $isOwner = $project->user_id === Auth::id();
     $isTeamMember = $project->members && $project->members->contains(Auth::id());
 
     if (! $isOwner && ! $isTeamMember) {
         abort(403, 'Anda tidak memiliki akses ke proyek ini.');
     }
-}
+    }
 
-    public function index()
+   public function index()
     {
-        $projects = Project::with('team')->latest()->paginate(10);
-        return view('projects.index', compact('projects'));
+    $user = Auth::user();
+
+    $projects = Project::where(function ($query) use ($user) {
+        $query->where('user_id', $user->id)
+              ->orWhereHas('members', function ($q) use ($user) {
+                  $q->where('user_id', $user->id);
+              });
+    })
+    ->with('team')
+    ->latest()
+    ->paginate(10);
+
+    return view('projects.index', compact('projects'));
     }
 
     public function create()
