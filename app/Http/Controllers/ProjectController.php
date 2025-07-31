@@ -16,36 +16,44 @@ class ProjectController extends Controller
     /**
      * Show the dashboard with project statistics.
      */
-    public function dashboard()
+public function dashboard()
     {
-        $user = Auth::user();
+    $user = Auth::user();
 
-        $totalProjects = $user->projects()->count();
-        $completedProjects = $user->projects()->where('status', 'completed')->count();
-        $runningProjects = $user->projects()->where('status', 'in_progress')->count();
-        $pendingProjects = $user->projects()->where('status', 'pending')->count();
-        $cancelledProjects = $user->projects()->where('status', 'cancelled')->count();
+    $allProjects = Project::where(function ($query) use ($user) {
+        $query->where('user_id', $user->id)
+              ->orWhereHas('members', function ($q) use ($user) {
+                  $q->where('user_id', $user->id);
+              });
+    });
 
-        $projectsForMonitoring = $user->projects()
-            ->whereIn('status', ['in_progress', 'pending'])
-            ->orderBy('end_date')
-            ->get();
+    $totalProjects = (clone $allProjects)->count();
+    $completedProjects = (clone $allProjects)->where('status', 'completed')->count();
+    $runningProjects = (clone $allProjects)->where('status', 'in_progress')->count();
+    $pendingProjects = (clone $allProjects)->where('status', 'pending')->count();
+    $cancelledProjects = (clone $allProjects)->where('status', 'cancelled')->count();
 
-        $urgentProjects = $user->projects()
-            ->whereIn('status', ['pending', 'in_progress'])
-            ->where('end_date', '<=', Carbon::now()->addDays(7))
-            ->orderBy('end_date')
-            ->get();
+    $projectsForMonitoring = (clone $allProjects)
+        ->whereIn('status', ['in_progress', 'pending'])
+        ->orderBy('end_date')
+        ->get();
 
-        return view('dashboard', compact(
-            'totalProjects',
-            'completedProjects',
-            'runningProjects',
-            'pendingProjects',
-            'cancelledProjects',
-            'projectsForMonitoring',
-            'urgentProjects'
-        ));
+    $urgentProjects = (clone $allProjects)
+        ->whereIn('status', ['pending', 'in_progress'])
+        ->where('end_date', '<=', Carbon::now()->addDays(7))
+        ->orderBy('end_date')
+        ->get();
+
+    return view('dashboard', compact(
+        'totalProjects',
+        'completedProjects',
+        'runningProjects',
+        'pendingProjects',
+        'cancelledProjects',
+        'projectsForMonitoring',
+        'urgentProjects'
+    ));
+
     }
 
     /**
@@ -78,26 +86,32 @@ class ProjectController extends Controller
     return view('projects.index', compact('projects'));
     }
 
+
+
     public function create()
     {
         $teams = User::all(); // ambil semua user untuk dropdown tim
         return view('projects.create', compact('teams'));
     }
 
-    public function store(Request $request)
+   public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'status' => 'required|in:pending,in_progress,completed,cancelled',
-        ]);
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'start_date' => 'nullable|date',
+        'end_date' => 'nullable|date|after_or_equal:start_date',
+        'status' => 'required|in:pending,in_progress,completed,cancelled',
+    ]);
 
-        Auth::user()->projects()->create($request->all());
+    $projectData = $request->only(['name', 'description', 'start_date', 'end_date', 'status']);
+    $projectData['user_id'] = Auth::id(); // ✅ Ini yang ditambahkan
 
-        return redirect()->route('projects.index')->with('success', 'Project created successfully.');
+    Project::create($projectData); // ⬅️ Gunakan ini, bukan $request->all()
+
+    return redirect()->route('projects.index')->with('success', 'Project created successfully.');
     }
+
     public function show(Project $project)
     {
     $users = User::all(); // <--- penting!
