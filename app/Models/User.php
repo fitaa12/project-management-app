@@ -46,7 +46,7 @@ class User extends Authenticatable
     // Relasi: User memiliki banyak proyek
     public function projects()
     {
-        return $this->hasMany(Project::class);
+        return $this->belongsToMany(Project::class, 'project_user');
     }
 
     // Relasi: User bisa menjadi anggota di banyak proyek (melalui tabel pivot)
